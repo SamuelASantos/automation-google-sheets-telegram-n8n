@@ -1,0 +1,141 @@
+{
+  "name": "Planilha -> Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1y5f_Y1RjzU1whsnkxkCG-dsLuRO25uOP9b-Pcp20vLE",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "0",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8127ac20-f38f-4ae0-a5f6-6633bc119c00",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "kxorYjT8shJNGMMy",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4082ee7f-d995-41d9-a965-a69926bff447",
+              "name": "message",
+              "value": "=📥 *Novo contato recebido*\n\n🕒 *Data/Hora:* {{ $json['Data/Hora'] }}\n\n👤 *Nome:* {{$json[\"Nome\"]}}\n📧 *Email:* {{$json[\"Email\"]}}\n🎯 *Interesse:* {{$json[\"Interesse\"]}}\n\n💬 *Mensagem:*\n{{$json[\"Mensagem\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "f0d9694f-4a54-4faa-b178-bb20209b85fc",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "cbbcec9f-f218-417c-8913-36e32db9d485",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/bot8229790680:AAHbvQbo14GeFMBhxYZU1wzaz5vTx3K9OwI/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "133315053"
+            },
+            {
+              "name": "text",
+              "value": "=={{$json.message}}"
+            },
+            {
+              "name": "parse_mode",
+              "value": "Markdown"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "e072dd86-2654-4707-b759-dc3823cb9320",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "f9a4898b-3722-458e-b61b-495afe168870",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f8793bde500b4baf18f2317d7945d6d192a006ce33fb50eea125e086c39e3796"
+  },
+  "id": "1mOqR5OszOK6abxL",
+  "tags": []
+}
